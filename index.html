@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Task - Markdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+      color: #6200ea;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #6200ea;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    pre {
+      background: #eee;
+      padding: 20px;
+      white-space: pre-wrap;
+      margin-top: 30px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gerador de Task Markdown</h2>
+
+    <label for="ticket">ID do ticket relacionado</label>
+    <input type="text" id="ticket" />
+
+    <label for="hipoteses">Hipóteses levantadas</label>
+    <textarea id="hipoteses" rows="3"></textarea>
+
+    <label for="criterios">Critérios de sucesso</label>
+    <textarea id="criterios" rows="3"></textarea>
+
+    <label for="descricao">Descrição da solução proposta</label>
+    <textarea id="descricao" rows="3" disabled value="-- O RESPONSÁVEL DEVE PREENCHER --"></textarea>
+
+    <label for="esforco">Estimativa de esforço</label>
+    <input type="number" id="esforco" />
+
+    <label for="pessoas">Pessoas envolvidas</label>
+    <select id="pessoas">
+      <option>Frontend</option>
+      <option>Backend</option>
+      <option>QA</option>
+      <option>OPS</option>
+      <option>DBA</option>
+    </select>
+
+    <label for="testes">Cenários de teste esperados</label>
+    <textarea id="testes" rows="3"></textarea>
+
+    <button onclick="gerarMarkdown()">Gerar Markdown</button>
+
+    <pre id="resultado"></pre>
+  </div>
+
+  <script>
+    function gerarMarkdown() {
+      const hipoteses = document.getElementById('hipoteses').value;
+      const criterios = document.getElementById('criterios').value;
+      const descricao = document.getElementById('descricao').value;
+      const esforco = document.getElementById('esforco').value;
+      const pessoas = Array.from(document.getElementById('pessoas').selectedOptions).map(opt => opt.value).join(', ');
+      const testes = document.getElementById('testes').value;
+      const ticket = document.getElementById('ticket').value;
+
+      const markdown = `
+#### 📎 Vinculado ao Ticket
+
+- ID do ticket relacionado: ${ticket}
+
+#### 🧠 Ideação
+- Hipóteses levantadas:
+${hipoteses}
+
+- Critérios de sucesso:\
+${criterios}
+
+#### ✍️ Prototipagem
+- Descrição da solução proposta:
+${descricao || "*O RESPONSÁVEL DEVE PREENCHER*"}
+
+- Estimativa de esforço: ${esforco}
+- Pessoas envolvidas: ${pessoas}
+
+#### 🧪 Teste
+- Cenários de teste esperados:
+${testes}
+`;
+
+      document.getElementById('resultado').textContent = markdown;
+    }
+  </script>
+</body>
+</html>
